@@ -1,0 +1,250 @@
+Jenkins
+It is a build tool.
+
+
+ci : continous integration : continous build + continous test 
+old code with new code
+before ci we have time waste and every thing is manual work.
+after ci everything is automated.
+
+cd : continous delivery	  : deployment manually to prod env
+cd : continous deployment : deployment automatically to prod env
+
+PIPELINE:
+STEP BY STEP EXECUTION OF A PARTICULAR PROCESS.
+SERIES OF EVENTS INTERLINKED WITH EACHOTHER.
+
+CODE -- > BUILD -- > TEST -- >  DEPLOY
+
+ENV:
+DEV	: DEVELOPERS
+QA	: TESTERS
+UAT	: CLIENT
+
+THE ABOVE ENVS ARE CALLED AS PRE-PROD OR NON-PROD
+
+PROD	: USER
+PROD ENV IS ALSO CALLED AS LIVE ENV
+
+Day 2:-
+
+Jenkins port number - 8080
+ssh port number -22
+http port number - 80
+https - 443
+mysql -3306
+rdp - 3389
+
+To lunch instance for Jenkins
+
+* Go to aws console and login
+* Go to search box type ec2 and select.
+* launch instance 
+ step 1 - select amazon-linux 2 hvm (ami)
+ step 2 - select instance type t2.micro
+ step 3 - create new key pair in .pem
+ step 4 - create new security group  
+           go to edit and provide ssh and all traffic
+ step 5 - launch instance.
+* Go to instance select connect and go through ssh client-->copy example
+Go to browser - jenkins.io - click on download
+* Download Jenkins 2.479.2 LTS for: redhat/centos/fedora
+   select that
+
+amazon-linux -- yum
+Ubuntu     --- apt
+redhat      --- rpm
+
+JENKINS: PORT - 8080
+
+SETUP:
+STEP-1: GETTING REP0 (jenkins.io -- > downloads -- > Redhat)
+sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+
+STEP-2: INSTALLING JAVA 11
+amazon-linux-extras install java-openjdk11 -y
+
+STEP-3: INSTALLING GIT JENKINS MAVEN 
+yum install git maven jenkins -y
+
+STEP-4: STARTING THE SERVICE (any service will be on stopped state when its installed)
+systemctl start jenkins
+systemctl status jenkins
+
+try this installation its workig
+sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+amazon-linux-extras install java-openjdk11 -y
+yum install git maven jenkins -y
+systemctl start jenkins
+systemctl status jenkins
+
+
+STEP-5: CONNECTING TO JENKINS
+Public-ip:8080 -- > browser
+
+ vim jenkins.sh
+    3  sh jenkins.sh
+    4  clear
+    5  cat /var/lib/jenkins/secrets/initialAdminPassword
+    6  cd /var/lib/jenkins/workspace/swiggy
+    7  ll
+    8  cat pom.xml
+    9  ll
+   10  cat Jenkinsfile
+   11  ll
+   12  git clone https://github.com/nit8ambatch/netflix-webapp-code.git
+   13  ll
+   14  cd netflix-webapp-code/
+   15  ll
+   16  cd ..
+   17  ll
+   18  clear
+   19  cat /etc/passwd
+   20  df -h
+   21  free -h
+   22  ll
+   23  rm -rf mani nani sony aws
+   24  ll
+
+jenkins setup in ubuntu:-
+
+sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc]" \ https://pkg.jenkins.io/debian-stable binary/ | sudo tee \/etc/apt/sources.list.d/jenkins.list > /dev/null
+sudo apt-get update -y
+sudo apt-get upgrade -y
+sudo apt-get install fontconfig openjdk-17-jre -y
+sudo apt-get install jenkins -y
+systemctl start jenkins
+systemctl status jenkins
+
+
+To install jenkins setup in ubununt install below given commands
+
+sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc]" \ https://pkg.jenkins.io/debian-stable binary/ | sudo tee \/etc/apt/sources.list.d/jenkins.list > /dev/null
+sudo apt-get update -y
+sudo apt-get upgrade -y
+sudo apt-get install fontconfig openjdk-17-jre -y
+sudo apt-get install jenkins -y
+systemctl start jenkins
+systemctl status jenkins
+
+============================================================================================================
+
+To install jenkins setup in amazon-linux below given commnds
+
+sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+amazon-linux-extras install java-openjdk11 -y
+yum install git maven jenkins -y
+systemctl start jenkins
+systemctl status jenkins
+
+###########################################################################################################
+
+vim jenkins.sh
+insert mode 
+:wq
+
+if we run manually in fre style project
+''''
+#!/bin/bash
+
+# Get total and used memory
+TOTAL_MEM=$(free -m | awk '/^Mem:/{print $2}')
+USED_MEM=$(free -m | awk '/^Mem:/{print $3}')
+FREE_MEM=$(free -m | awk '/^Mem:/{print $4}')
+THRESHOLD=20  # Set threshold for alert (in percentage)
+
+# Calculate memory usage percentage
+MEM_USAGE=$(( 100 * USED_MEM / TOTAL_MEM ))
+
+# Display memory usage
+echo "Total Memory: ${TOTAL_MEM} MB"
+echo "Used Memory: ${USED_MEM} MB"
+echo "Free Memory: ${FREE_MEM} MB"
+echo "Memory Usage: ${MEM_USAGE}%"
+
+# Check if memory usage exceeds the threshold
+if [ "$MEM_USAGE" -ge "$THRESHOLD" ]; then
+    echo "WARNING: Memory usage is above ${THRESHOLD}%!"
+fi
+''''''
+
+pipeline {
+    agent any
+    
+    stages {
+        stage ("stage-1") {
+            steps {
+                sh 'touch file1 file2'
+                sh 'pwd'
+                sh 'mkdir d1'
+            }
+        }
+    }
+}
+
+passs
+pipeline agent any stages stage and steps
+
+pipeline {
+    agent any
+   
+    stages{
+        stage ('build'){
+            steps {
+                sh '''
+                #!/bin/bash
+
+                # Get total and used memory
+                TOTAL_MEM=$(free -m | awk '/^Mem:/{print $2}')
+                USED_MEM=$(free -m | awk '/^Mem:/{print $3}')
+                FREE_MEM=$(free -m | awk '/^Mem:/{print $4}')
+                THRESHOLD=20  # Set threshold for alert (in percentage)
+
+                # Calculate memory usage percentage
+                MEM_USAGE=$(( 100 * USED_MEM / TOTAL_MEM ))
+
+                # Display memory usage
+                echo "Total Memory: ${TOTAL_MEM} MB"
+                echo "Used Memory: ${USED_MEM} MB"
+                echo "Free Memory: ${FREE_MEM} MB"
+                echo "Memory Usage: ${MEM_USAGE}%"
+
+                # Check if memory usage exceeds the threshold
+                if [ "$MEM_USAGE" -ge "$THRESHOLD" ]; then
+                     echo "WARNING: Memory usage is above ${THRESHOLD}%!"
+                fi
+                '''
+            }
+        }
+    }    
+}  
+
+pipeline {
+    agent any
+   
+    stages{
+        stage ('Bash script'){
+            steps {
+                sh '''
+                #!/bin/bash
+
+                # Set the CPU usage threshold (in percentage)
+                THRESHOLD=80
+                # Get the current CPU usage (ignoring the first line)
+                CPU_USAGE=$(top -bn1 | grep "Cpu(s)" | awk '{print 100 - $8}')
+                # Display CPU usage
+                echo "Current CPU Usage: ${CPU_USAGE}%"
+                # Check if CPU usage exceeds the threshold
+                if (( $(echo "$CPU_USAGE > $THRESHOLD" | bc -l) )); then
+                    echo "WARNING: CPU usage is above ${THRESHOLD}%!"
+                fi
+                '''
+            }
+        }
+    }    
+}  
